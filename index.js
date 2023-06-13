@@ -12,7 +12,7 @@ const connect = () => {
     .then(() => {
       console.log("connected to server");
     })
-    .catch((error) => {
+    .catch(error => {
       throw error;
     });
 };
@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
   return res.status(status).json({
     success: false,
     status,
-    message,
+    message
   });
 });
 app.use((req, res, next) => {
