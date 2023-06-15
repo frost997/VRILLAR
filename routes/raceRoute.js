@@ -4,13 +4,10 @@ import {
   getDriver,
   getTeam,
   getYearlyRanking,
-  getYear,
   search
 } from "../controller/raceController.js";
 
 const router = express.Router();
-
-router.get("/getYear/:year", getYear);
 
 router.get("/getRace/:year/:grandPrix", getRace);
 
