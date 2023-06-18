@@ -11,7 +11,7 @@ export const parameterCheck = (keyData, checkParam) => {
  
 export const getTopSkip = (queryData) => {
     let skip = 0
-    let page = 20
+    let limit = 20
     if (
       queryData.skip &&
       parseInt(queryData.skip) &&
@@ -20,11 +20,11 @@ export const getTopSkip = (queryData) => {
       skip = parseInt(queryData.skip);
     }
     if (
-      queryData.page &&
-      parseInt(queryData.page) &&
-      parseInt(queryData.page) !== NaN
+      queryData.limit &&
+      parseInt(queryData.limit) &&
+      parseInt(queryData.limit) !== NaN
     ) {
-      page = parseInt(queryData.page);
+      limit = parseInt(queryData.limit);
     }
-    return {skip,page}
+    return {skip,limit}
 }

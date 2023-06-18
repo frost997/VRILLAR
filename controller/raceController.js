@@ -14,12 +14,12 @@ export const getYear = async (req, res, next) => {
     }
     const condition = { Year: sanitize(parseInt(req.params.year)) };
 
-    const {skip,page} = getTopSkip(req.query)
+    const {skip,limit} = getTopSkip(req.query)
 
     const race = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(page);
+      .limit(limit);
 
     res.status(200).json(race);
   } catch (error) {
@@ -42,11 +42,11 @@ export const getRace = async (req, res, next) => {
       condition["GrandPrix"] = sanitize(req.params.grandPrix);
     }
 
-    const {skip,page} = getTopSkip(req.query)
+    const {skip,limit} = getTopSkip(req.query)
     const race = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(page);
+      .limit(limit);
 
     res.status(200).json(race);
   } catch (error) {
@@ -66,7 +66,7 @@ export const getDriver = async (req, res, next) => {
     }
 
     
-    const {skip,page} = getTopSkip(req.query)
+    const {skip,limit} = getTopSkip(req.query)
     const condition = { Year: sanitize(parseInt(req.params.year)) };
     if (req.params.driver && req.params.driver !== "All") {
       condition["Driver"] = sanitize(req.params.driver);
@@ -75,7 +75,7 @@ export const getDriver = async (req, res, next) => {
     const driver = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(page);
+      .limit(limit);
 
     res.status(200).json(driver);
   } catch (error) {
@@ -95,7 +95,7 @@ export const getTeam = async (req, res, next) => {
     }
 
 
-    const {skip,page} = getTopSkip(req.query)
+    const {skip,limit} = getTopSkip(req.query)
 
     const condition = { Year: sanitize(parseInt(req.params.year)) };
     if (req.params.car && req.params.car !== "All") {
@@ -105,7 +105,7 @@ export const getTeam = async (req, res, next) => {
     const team = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(page);
+      .limit(limit);
 
     res.status(200).json(team);
   } catch (error) {
@@ -115,21 +115,21 @@ export const getTeam = async (req, res, next) => {
 
 export const search = async (req, res, next) => {
   try {
-    if (!req.query.q) {
+    if (!req.query.search) {
       return;
     }
     
-    const query = sanitize(req.query.q);
-    const {skip,page} = getTopSkip(req.query)
+    const query = sanitize(req.query.search);
+    const {skip,limit} = getTopSkip(req.query)
     const races = await Race.find({
       $or: [
         { GrandPrix: { $regex: query, $options: "i" } },
         { Driver: { $regex: query, $options: "i" } },
         { Car: { $regex: query, $options: "i" } },
         { Date: { $regex: query, $options: "i" } },
-        { Year: { $regex: query, $options: "i" } }
+        { Year:  !parseInt(query) || parseInt(query) === NaN ? ""  : parseInt(query)  }
       ]
-    }).limit(page).skip(skip);
+    }).limit(limit).skip(skip);
     res.status(200).json(races);
   } catch (error) {
     next(error);
@@ -220,11 +220,11 @@ export const getYearlyRanking = async (req, res, next) => {
     }
 
     if (groupByCond?.length) {
-      const {skip,page} = getTopSkip(req.query)
+      const {skip,limit} = getTopSkip(req.query)
       let races = await Race.aggregate([
         { $match: { ...condition } },
         ...groupByCond,
-        {$skip:skip},{$limit:page}
+        {$skip:skip},{$limit:limit}
       ]);
       res.status(200).json(races);
     } else {
