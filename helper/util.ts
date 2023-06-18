@@ -15,14 +15,14 @@ export const getTopSkip = (queryData) => {
     if (
       queryData.skip &&
       parseInt(queryData.skip) &&
-      parseInt(queryData.skip) !== NaN
+      !Number.isNaN(parseInt(queryData.skip))
     ) {
       skip = parseInt(queryData.skip);
     }
     if (
       queryData.limit &&
       parseInt(queryData.limit) &&
-      parseInt(queryData.limit) !== NaN
+      !Number.isNaN(parseInt(queryData.limit))
     ) {
       limit = parseInt(queryData.limit);
     }

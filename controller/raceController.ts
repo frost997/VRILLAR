@@ -8,7 +8,7 @@ export const getYear = async (req, res, next) => {
     if (
       !req.params.year ||
       !parseInt(req.params.year) ||
-      parseInt(req.params.year) === NaN
+      Number.isNaN(parseInt(req.params.year))
     ) {
       return next(errorHandler(404, "data not found"));
     }
@@ -33,7 +33,7 @@ export const getRace = async (req, res, next) => {
     if (
       !req.params.year ||
       !parseInt(req.params.year) ||
-      parseInt(req.params.year) === NaN
+      Number.isNaN(parseInt(req.params.year))
     ) {
       return next(errorHandler(404, "data not found"));
     }
@@ -60,7 +60,7 @@ export const getDriver = async (req, res, next) => {
     if (
       !req.params.year ||
       !parseInt(req.params.year) ||
-      parseInt(req.params.year) === NaN
+      Number.isNaN(parseInt(req.params.year))
     ) {
       return next(errorHandler(404, "data not found"));
     }
@@ -89,7 +89,7 @@ export const getTeam = async (req, res, next) => {
     if (
       !req.params.year ||
       !parseInt(req.params.year) ||
-      parseInt(req.params.year) === NaN
+      Number.isNaN(parseInt(req.params.year))
     ) {
       return next(errorHandler(404, "data not found"));
     }
@@ -127,7 +127,7 @@ export const search = async (req, res, next) => {
         { Driver: { $regex: query, $options: "i" } },
         { Car: { $regex: query, $options: "i" } },
         { Date: { $regex: query, $options: "i" } },
-        { Year:  !parseInt(query) || parseInt(query) === NaN ? ""  : parseInt(query)  }
+        { Year:  !parseInt(query) || Number.isNaN(parseInt(query)) ? ""  : parseInt(query)  }
       ]
     }).limit(limit).skip(skip);
     res.status(200).json(races);
@@ -141,7 +141,7 @@ export const getYearlyRanking = async (req, res, next) => {
     if (
       !req.params.year ||
       !parseInt(req.params.year) ||
-      parseInt(req.params.year) === NaN
+      Number.isNaN(parseInt(req.params.year))
     ) {
       return next(errorHandler(404, "data not found"));
     }
