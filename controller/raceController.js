@@ -220,9 +220,11 @@ export const getYearlyRanking = async (req, res, next) => {
     }
 
     if (groupByCond?.length) {
+      const {skip,page} = getTopSkip(req.query)
       let races = await Race.aggregate([
         { $match: { ...condition } },
-        ...groupByCond
+        ...groupByCond,
+        {$skip:skip},{$limit:page}
       ]);
       res.status(200).json(races);
     } else {
