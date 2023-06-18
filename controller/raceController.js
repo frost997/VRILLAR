@@ -1,7 +1,7 @@
 import { errorHandler } from "../helper/error.js";
 import Race from "../model/Race.js";
 import sanitize from "mongo-sanitize";
-
+import { getTopSkip } from "../helper/util.js";
 //get specific Year
 export const getYear = async (req, res, next) => {
   try {
@@ -14,19 +14,12 @@ export const getYear = async (req, res, next) => {
     }
     const condition = { Year: sanitize(parseInt(req.params.year)) };
 
-    let skip = 0;
-    if (
-      req.query.skip &&
-      parseInt(req.params.year) &&
-      parseInt(req.params.year) !== NaN
-    ) {
-      skip = parseInt(req.query.skip);
-    }
+    const {skip,page} = getTopSkip(req.query)
 
     const race = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(10);
+      .limit(page);
 
     res.status(200).json(race);
   } catch (error) {
@@ -49,19 +42,11 @@ export const getRace = async (req, res, next) => {
       condition["GrandPrix"] = sanitize(req.params.grandPrix);
     }
 
-    let skip = 0;
-    if (
-      req.query.skip &&
-      parseInt(req.params.year) &&
-      parseInt(req.params.year) !== NaN
-    ) {
-      skip = parseInt(req.query.skip);
-    }
-
+    const {skip,page} = getTopSkip(req.query)
     const race = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(10);
+      .limit(page);
 
     res.status(200).json(race);
   } catch (error) {
@@ -80,14 +65,8 @@ export const getDriver = async (req, res, next) => {
       return next(errorHandler(404, "data not found"));
     }
 
-    let skip = 0;
-    if (
-      req.query.skip &&
-      parseInt(req.params.year) &&
-      parseInt(req.params.year) !== NaN
-    ) {
-      skip = parseInt(req.query.skip);
-    }
+    
+    const {skip,page} = getTopSkip(req.query)
     const condition = { Year: sanitize(parseInt(req.params.year)) };
     if (req.params.driver && req.params.driver !== "All") {
       condition["Driver"] = sanitize(req.params.driver);
@@ -96,7 +75,7 @@ export const getDriver = async (req, res, next) => {
     const driver = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(10);
+      .limit(page);
 
     res.status(200).json(driver);
   } catch (error) {
@@ -115,14 +94,9 @@ export const getTeam = async (req, res, next) => {
       return next(errorHandler(404, "data not found"));
     }
 
-    let skip = 0;
-    if (
-      req.query.skip &&
-      parseInt(req.params.year) &&
-      parseInt(req.params.year) !== NaN
-    ) {
-      skip = parseInt(req.query.skip);
-    }
+
+    const {skip,page} = getTopSkip(req.query)
+
     const condition = { Year: sanitize(parseInt(req.params.year)) };
     if (req.params.car && req.params.car !== "All") {
       condition["Car"] = sanitize(req.params.car);
@@ -131,7 +105,7 @@ export const getTeam = async (req, res, next) => {
     const team = await Race.find(condition)
       .sort({ Pts: -1 })
       .skip(skip)
-      .limit(10);
+      .limit(page);
 
     res.status(200).json(team);
   } catch (error) {
@@ -144,15 +118,18 @@ export const search = async (req, res, next) => {
     if (!req.query.q) {
       return;
     }
+    
     const query = sanitize(req.query.q);
+    const {skip,page} = getTopSkip(req.query)
     const races = await Race.find({
       $or: [
         { GrandPrix: { $regex: query, $options: "i" } },
         { Driver: { $regex: query, $options: "i" } },
         { Car: { $regex: query, $options: "i" } },
-        { Year: parseInt(query) }
+        { Date: { $regex: query, $options: "i" } },
+        { Year: { $regex: query, $options: "i" } }
       ]
-    });
+    }).limit(page).skip(skip);
     res.status(200).json(races);
   } catch (error) {
     next(error);
@@ -169,7 +146,6 @@ export const getYearlyRanking = async (req, res, next) => {
       return next(errorHandler(404, "data not found"));
     }
     const condition = { Year: sanitize(parseInt(req.params.year)) };
-    let fieldProjection;
     let groupByCond;
 
     switch (req.params.category) {
