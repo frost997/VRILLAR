@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import raceRoute from "./routes/raceRoute.js";
+import raceRoute from "./src/routes/raceRoute.js";
 const app = express();
 dotenv.config();
 
