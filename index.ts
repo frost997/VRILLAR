@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import raceRoute from "./src/routes/raceRoute.js";
+import driverRoute from "./src/routes/driverRoute.js";
+import yearRoute from "./src/routes/yearRoute.js";
+import searchRoute from "./src/routes/searchRoute.js";
 const app = express();
 dotenv.config();
 
@@ -20,6 +23,9 @@ const connect = () => {
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/races", raceRoute);
+app.use("/api/drivers", driverRoute);
+app.use("/api/years", yearRoute);
+app.use("/api/search", searchRoute);
 app.use((err, req, res, next) => {
   const status = err.status || 500;
   const message = err.message || "  ";
