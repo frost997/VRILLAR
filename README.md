@@ -23,7 +23,7 @@ http://localhost:8800/api/years/:year
 
 + Ranking: get yearly ranking race base on which year and other three catergory
 race, driver and team
-http://localhost:8800/api/years/:year/:category 
+http://localhost:8800/api/years/ranking/:year/:category 
 (example: http://localhost:8800/api/years/ranking/2022/race)
 
 + Search: get race info base on query search, the search string can be incomplete  
