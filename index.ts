@@ -6,6 +6,7 @@ import raceRoute from "./src/routes/raceRoute.js";
 import driverRoute from "./src/routes/driverRoute.js";
 import yearRoute from "./src/routes/yearRoute.js";
 import searchRoute from "./src/routes/searchRoute.js";
+import allRoute from "./src/routes/allRoute.js";
 const app = express();
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/races", raceRoute);
 app.use("/api/drivers", driverRoute);
 app.use("/api/years", yearRoute);
 app.use("/api/search", searchRoute);
+app.use("/api/all", allRoute);
 app.use((err, req, res, next) => {
   const status = err.status || 500;
   const message = err.message || "  ";

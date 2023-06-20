@@ -3,13 +3,9 @@ import Race from "../model/Race.js";
 import sanitize from "mongo-sanitize";
 import { getTopSkip } from "../helper/util.js";
 
-//get specific Race
-export const getRace = async (req, res, next) => {
+export const getAll = async (req, res, next) => {
   try {
-    const { params, query } = req;
-    if (!params.grandPrix) {
-      return next(errorHandler(404, "data not found"));
-    }
+    const { query } = req;
     const condition = {};
     if (
       query.year &&
@@ -18,10 +14,6 @@ export const getRace = async (req, res, next) => {
     ) {
       condition["Year"] = sanitize(parseInt(query.year));
     }
-    if (params.grandPrix) {
-      condition["GrandPrix"] = sanitize(params.grandPrix);
-    }
-
     const { skip, limit } = getTopSkip(query);
     const race = await Race.find(condition)
       .sort({ Year: -1, Pts: -1, _id: -1 })

@@ -16,6 +16,9 @@ export const getDriver = async (req, res, next) => {
     ) {
       condition["Year"] = sanitize(parseInt(query.year));
     }
+    if (!params.id) {
+      return next(errorHandler(404, "data not found"));
+    }
     const sortCond: object = {
       _id: -1
     };

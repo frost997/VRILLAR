@@ -5,6 +5,4 @@ const router = express.Router();
 
 router.get("/:category/:id", getDriver);
 
-router.get("/:category/", getDriver);
-
 export default router;
