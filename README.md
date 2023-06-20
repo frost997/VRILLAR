@@ -10,12 +10,12 @@ According to the test, I have prepare the following APIs that match what the exa
 1/ Create 3 basic get API that simply get race's data from database 
 base on the following category:
 
-+ Races: get specific race using http://localhost:8800/api/races/:grandPix
++ Races: get specific race using http://localhost:8800/api/races/:grandPrix
 (example: http://localhost:8800/api/races/Spain)
 
 + Driver: this api require category Driver or Team to indicate specific driver or team 
 http://localhost:8800/api/drivers/:category/:id
-(example: http://localhost:8800/api/drivers/Driver/Valtteri Bottas)
+(example: http://localhost:8800/api/drivers/Driver/Max Verstappen)
  
 + Year: get race info base on which year it took place using 
 http://localhost:8800/api/years/:year 
