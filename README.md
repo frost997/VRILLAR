@@ -33,5 +33,5 @@ http://localhost:8800/api/search/:search
 + All: get all race info   
 http://localhost:8800/api/all
 
-2/ All APIs except for All and Search, can be filter with skip, limit and year.
-Example:http://localhost:8800/api/drivers/Team/Mercedes?year=2022&limit=10&skip=2
+2/ All APIs except for Search, can be filter with skip, limit and year.
+Example: http://localhost:8800/api/drivers/Team/Mercedes?year=2022&limit=10&skip=2
