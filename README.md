@@ -1,5 +1,4 @@
 # VRILLAR TEST
-According to the test, I have prepare the following APIs that match what the exam required:
 
 # Set up
 + open the project and run npm i
